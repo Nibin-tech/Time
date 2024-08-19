@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Remaining for Next Day</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.8), #000);
+        }
+        .counter {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        .time {
+            font-size: 2em;
+            color: #333;
+        }
+        .dialogue {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 10px;
+        }
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(white, rgba(255, 255, 255, 0));
+            animation: shooting 2s linear infinite;
+            z-index: 0;
+        }
+        @keyframes shooting {
+            0% {
+                transform: translate(0, 0) rotate(135deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(1000px, 1000px) rotate(135deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="counter">
+        <div class="time" id="time-remaining">00:00:00</div>
+        <div class="dialogue" id="dialogue">More 00:00:00 for your day</div>
+    </div>
+
+    <div class="shooting-star" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+    <div class="shooting-star" style="top: 20%; left: 20%; animation-delay: 1s;"></div>
+    <div class="shooting-star" style="top: 30%; left: 15%; animation-delay: 2s;"></div>
+    <div class="shooting-star" style="top: 40%; left: 5%; animation-delay: 3s;"></div>
+
+    <script>
+        function updateTimeRemaining() {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setHours(24, 0, 0, 0);
+            const timeDifference = tomorrow - now;
+            
+            const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            const timeString =
+                String(hours).padStart(2, '0') + ':' +
+                String(minutes).padStart(2, '0') + ':' +
+                String(seconds).padStart(2, '0');
+
+            document.getElementById('time-remaining').textContent = timeString;
+            document.getElementById('dialogue').textContent = `More ${timeString} for your day`;
+        }
+
+        setInterval(updateTimeRemaining, 1000);
+        updateTimeRemaining();
+    </script>
+</body>
+</html>
